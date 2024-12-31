@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: my-nodejs-api
+    env: node
+    buildCommand: "npm install"
+    startCommand: "npm start"
+    repo: https://github.com/NajahAitelfatmi/upStudi
+    branch: v3
+    envVars:
+      - key: NODE_ENV
+        value: production
+    healthCheckPath: /health
+    buildDir: api  # Assuming the backend is located in the 'api' folder
+
+  - type: web
+    name: booking-frontend
+    env: node
+    buildCommand: "npm install -g react-scripts && npm install --force && npm run build"
+    startCommand: "serve -s build"
+    repo: https://github.com/NajahAitelfatmi/upStudi
+    branch: v3
+    envVars:
+      - key: NODE_ENV
+        value: production
+    buildDir: client
