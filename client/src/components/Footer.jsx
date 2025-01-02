@@ -1,123 +1,280 @@
-import React from 'react'
-import {Link} from 'react-router-dom'
-export default function footer() {
-  return (
-    <div>
-        <div className="footer-section section">
-            <div className="container">
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
+export default function Footer() {
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        subject: '',
+        message: '',
+    });
+
+    const [responseMessage, setResponseMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await fetch('/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                setResponseMessage(result.message);
+                setErrorMessage('');
+                setFormData({ name: '', email: '', subject: '', message: '' });
+            } else {
+                setErrorMessage(result.error || 'Une erreur est survenue.');
+                setResponseMessage('');
+            }
+        } catch (error) {
+            setErrorMessage("Erreur lors de l'envoi du formulaire.");
+            setResponseMessage('');
+        }
+    };
+
+    const styles = {
+        footer: {
+            backgroundColor: '#003865',
+            color: '#ffffff',
+            padding: '40px 20px',
+            textAlign: 'left',
+            fontFamily: 'Arial, sans-serif',
+        },
+        container: {
+            maxWidth: '1200px',
+            margin: '0 auto',
+        },
+        widget: {
+            marginBottom: '30px',
+        },
+        widgetTitle: {
+            fontSize: '20px',
+            fontWeight: '600',
+            marginBottom: '20px',
+            borderBottom: '2px solid #c7d3db',
+            display: 'inline-block',
+            paddingBottom: '5px',
+        },
+        text: {
+            lineHeight: '1.8',
+            fontSize: '14px',
+            color: '#e0e0e0',
+        },
+        socialIcons: {
+            listStyle: 'none',
+            padding: 0,
+            display: 'flex',
+            gap: '10px',
+            marginTop: '15px',
+        },
+        socialIcon: {
+            color: '#ffffff',
+            fontSize: '18px',
+            textDecoration: 'none',
+            transition: 'color 0.3s',
+        },
+        socialIconHover: {
+            color: '#0067ac',
+        },
+        links: {
+            listStyle: 'none',
+            padding: 0,
+        },
+        linkItem: {
+            marginBottom: '10px',
+        },
+        link: {
+            color: '#ffffff',
+            textDecoration: 'none',
+            fontSize: '14px',
+            transition: 'color 0.3s',
+        },
+        linkHover: {
+            color: '#0067ac',
+        },
+        form: {
+            marginTop: '20px',
+            backgroundColor: '#ffffff',
+            padding: '20px',
+            borderRadius: '8px',
+        },
+        formGroup: {
+            marginBottom: '15px',
+        },
+        input: {
+            width: '100%',
+            padding: '12px',
+            borderRadius: '5px',
+            border: '1px solid #ccc',
+            fontSize: '14px',
+            marginTop: '8px',
+        },
+        textarea: {
+            width: '100%',
+            padding: '12px',
+            borderRadius: '5px',
+            border: '1px solid #ccc',
+            fontSize: '14px',
+            minHeight: '100px',
+            marginTop: '8px',
+        },
+        button: {
+            backgroundColor: '#0067ac',
+            color: '#ffffff',
+            padding: '12px 25px',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+            fontSize: '14px',
+            width: '100%',
+            marginTop: '15px',
+            transition: 'background-color 0.3s',
+        },
+        buttonHover: {
+            backgroundColor: '#004c8c',
+        },
+        successMessage: {
+            color: 'green',
+            marginTop: '15px',
+        },
+        errorMessage: {
+            color: 'red',
+            marginTop: '15px',
+        },
+    };
+
+    return (
+        <div>
+            <div>
                 <div className="footer-widget-wrap">
-                    <div className="row">
-
+                    <div className="row" style={{ backgroundColor: '#003865' }}>
+                        {/* Section À propos */}
                         <div className="col-lg-3 col-sm-6">
-                            <div className="footer-widget widget-about">
-                                <div className="footer-logo">
-                                    <Link to="home"><img src="assets/images/logo-white.png" alt=""/></Link>
-                                </div>
-                                <p className="text">World largest online learning platform. Download our apps to start learning.</p>
-                                <div className="widget-info">
-                                    <div className="info-icon">
-                                        <i className="flaticon-phone-call"></i>
+                            <div style={styles.widget}>
+                                <h4 style={{ ...styles.widgetTitle, color: "#ffffff" }}>À propos</h4>
+                                <p style={styles.text}>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quis lorem neque.
+                                </p>
+                                <ul style={styles.socialIcons}>
+                                    <li>
+                                        <Link to="#" style={styles.socialIcon}>
+                                            <i className="fab fa-facebook-f"></i>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link to="#" style={styles.socialIcon}>
+                                            <i className="fab fa-twitter"></i>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link to="#" style={styles.socialIcon}>
+                                            <i className="fab fa-instagram"></i>
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        {/* Liens utiles */}
+                        <div className="col-lg-3 col-sm-6">
+                            <div style={styles.widget}>
+                                <h4 style={{ ...styles.widgetTitle, color: "#ffffff" }}>Liens utiles</h4>
+                                <ul style={styles.links}>
+                                    <li style={styles.linkItem}>
+                                        <Link to="/" style={styles.link}>Accueil</Link>
+                                    </li>
+                                    <li style={styles.linkItem}>
+                                        <Link to="/about" style={styles.link}>À propos</Link>
+                                    </li>
+                                    <li style={styles.linkItem}>
+                                        <Link to="/services" style={styles.link}>Services</Link>
+                                    </li>
+                                    <li style={styles.linkItem}>
+                                        <Link to="/contact" style={styles.link}>Contact</Link>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        {/* Contact */}
+                        <div className="col-lg-6 col-sm-6">
+                            <div style={styles.widget}>
+                                <h4 style={{ ...styles.widgetTitle, color: "#ffffff" }}>Contactez-nous</h4>
+                                <form onSubmit={handleSubmit} style={styles.form}>
+                                    <div style={styles.formGroup}>
+                                        <input
+                                            type="text"
+                                            name="name"
+                                            placeholder="Votre nom"
+                                            value={formData.name}
+                                            onChange={handleChange}
+                                            required
+                                            style={styles.input}
+                                        />
                                     </div>
-                                    <div className="info-text">
-                                        <p className="call-text">Call Us Free</p>
-                                        <Link to="tel:+91458654528">+91 458 654 528</Link>
+                                    <div style={styles.formGroup}>
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            placeholder="Votre email"
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                            required
+                                            style={styles.input}
+                                        />
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="col-lg-3 col-sm-6">
-                            <div className="footer-widget">
-                                <h4 className="footer-widget-title">Trending Courses</h4>
-                                <div className="widget-link">
-                                    <ul className="link">
-                                        <li><Link to="index.html">Home </Link></li>
-                                        <li><Link to="#">Pricing</Link></li>
-                                        <li><Link to="about.html">Compare plans</Link></li>
-                                        <li><Link to="/contact">Contact us</Link></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="col-lg-3 col-sm-6">
-                            <div className="footer-widget">
-                                <h4 className="footer-widget-title">Study material</h4>
-                                <div className="widget-link">
-                                    <ul className="link">
-                                        <li><Link to="blog.html">Blog</Link></li>
-                                        <li><Link to="#">Weekly webinar</Link></li>
-                                        <li><Link to="#">Academy</Link></li>
-                                        <li><Link to="#">Free eBooks & checklists</Link></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-sm-6">
-                            <div className="footer-widget">
-                                <h4 className="footer-widget-title">Download Now</h4>
-                                <div className="widget-download">
-                                    <Link to="#"><img src="assets/images/app-1.jpg" alt=""/></Link>
-                                    <Link to="#"><img src="assets/images/app-2.png" alt=""/></Link>
-                                </div>
+                                    <div style={styles.formGroup}>
+                                        <input
+                                            type="text"
+                                            name="subject"
+                                            placeholder="Sujet"
+                                            value={formData.subject}
+                                            onChange={handleChange}
+                                            required
+                                            style={styles.input}
+                                        />
+                                    </div>
+                                    <div style={styles.formGroup}>
+                                        <textarea
+                                            name="message"
+                                            placeholder="Votre message"
+                                            value={formData.message}
+                                            onChange={handleChange}
+                                            required
+                                            style={styles.textarea}
+                                        ></textarea>
+                                    </div>
+                                    <button
+                                        type="submit"
+                                        style={styles.button}
+                                        onMouseOver={(e) => (e.target.style.backgroundColor = styles.buttonHover.backgroundColor)}
+                                        onMouseOut={(e) => (e.target.style.backgroundColor = styles.button.backgroundColor)}
+                                    >
+                                        Envoyer
+                                    </button>
+                                </form>
+                                {responseMessage && <p style={styles.successMessage}>{responseMessage}</p>}
+                                {errorMessage && <p style={styles.errorMessage}>{errorMessage}</p>}
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div className="footer-copyright">
-                    <div className="copyright-wrapper">
-                        <div className="row align-items-center">
-                            <div className="col-lg-6 col-md-6">
-                                <div className="copyright-text">
-                                    <p>© Copyright 2023 upstudy All rights reserved. </p>
-                                </div>
-                            </div>
-                            <div className="col-lg-6 col-md-6">
-                                <div className="copyright-social">
-                                    <ul className="social">
-                                        <li><Link to="#"><i className="fab fa-facebook-f"></i></Link></li>
-                                        <li><Link to="#"><i className="fab fa-twitter"></i></Link></li>
-                                        <li><Link to="#"><i className="fab fa-linkedin-in"></i></Link></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
-
-        <div className="progress-wrap">
-            <svg className="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
-                <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
-            </svg>
-        </div>
-
-
-        <div id="course-hover">
-            <div className="course-hover">
-                <div className="courses-content">
-                    <div className="top-meta"><Link className="tag" to="#">Beginner</Link></div>
-                    <h3 className="title"><Link to="course-details.html">Design 101: Product & Web Design Course</Link></h3>
-                </div>
-                <div className="rating">
-                    <div className="rating-star">
-                        <div className="rating-active" style={{width:'60%'}}></div>
-                    </div>
-                    <span>(4.5)</span>
-                </div>
-                <p className="price">Free</p>
-                <p>World-className training and programs developed by top teachers Lorem ipsum dolor sit amet consectur adip iscing elit sed eiusmod tempor.</p>
-                <div className="courses-meta">
-                    <p className="student"><i className="flaticon-google-docs"></i> 10 Lessons</p>
-                    <p className="student"><i className="far fa-clock"></i> 03 Hours</p>
-                </div>
-                <div className="courses-btn"><Link className="btn" to="course-details.html">Course Full Details</Link></div>
-            </div>
-        </div>
-    </div>
-  )
+    );
 }

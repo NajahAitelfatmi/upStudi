@@ -9,6 +9,7 @@ import { db } from "./db.js";
 import cors from "cors";
 import path from "path";
 import fs from "fs";
+import nodemailer from 'nodemailer';
 
 const app = express();
 
@@ -37,13 +38,20 @@ const checkUserRole = (role) => {
 // File upload configuration
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(process.cwd(), "client/public/upload"));
+    cb(null, "../client/public/upload");
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + "_" + file.originalname);
+    cb(null, Date.now() + file.originalname);
   },
 });
+
 const upload = multer({ storage });
+
+// Upload route
+app.post("/api/upload", upload.single("file"), (req, res) => {
+  const file = req.file;
+  res.status(200).json(file.filename);
+});
 
 // Routes
 app.use("/api/auth", authRoutes);
@@ -142,6 +150,43 @@ app.get("/api/documents", (req, res) => {
     res.json(files);
   });
 });
+app.post('/api/contact', async (req, res) => {
+  const { name, email, subject, message } = req.body;
+
+  // Validation des champs requis
+  if (!name || !email || !subject || !message) {
+      return res.status(400).json({ error: 'Tous les champs sont obligatoires.' });
+  }
+
+  try {
+      const transporter = nodemailer.createTransport({
+          host: 'smtp.gmail.com',
+          port: 587,
+          secure: false, // Utilise TLS
+          auth: {
+              user: 'dinaelhyate@gmail.com', // Votre adresse Gmail
+              pass: 'fvlrnrdnfcffopyy', // Mot de passe d'application
+          },
+          tls: {
+              rejectUnauthorized: false, // Permet les certificats auto-signés
+          },
+      });
+
+      // Utiliser l'email fourni dans le formulaire pour le destinataire
+      await transporter.sendMail({
+          from: `"${name}" <${email}>`, // Expéditeur
+          to: 'dinaelhyate@gmail.com', // Destinataire (utilisé depuis l'input)
+          subject: subject, // Sujet
+          text: message, // Message
+      });
+
+      res.status(200).json({ message: 'Message envoyé avec succès.' });
+  } catch (error) {
+      console.error('Erreur lors de l\'envoi du message:', error);
+      res.status(500).json({ error: 'Erreur lors de l\'envoi du message.' });
+  }
+});
+
 
 // Server listening
 app.listen(8800, () => {

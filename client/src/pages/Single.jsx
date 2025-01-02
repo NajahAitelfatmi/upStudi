@@ -66,7 +66,7 @@ const Single = () => {
   };
 
   return (
-    <div className="single" style={{ marginTop: "140px", display: "flex", gap: "50px", maxWidth: "1200px", margin: "0 auto" }}>
+    <div className="single" style={{ marginTop: "190px", display: "flex", gap: "50px", maxWidth: "1200px", margin: "0 auto" }}>
       <div className="content" style={{ flex: "5", display: "flex", flexDirection: "column", gap: "40px" }}>
         
         {/* PDF Embed */}
@@ -86,27 +86,30 @@ const Single = () => {
         
         {/* File Download Section */}
         {post.pdf && (
-          <a 
-            href={`../upload/${post.pdf}`} 
-            download={`${post.title}.pdf`}  // Use the title of the post as the download filename
-            style={{
-              display: "inline-block",
-              padding: "12px 20px",
-              backgroundColor: "#007BFF",
-              color: "#fff",
-              textDecoration: "none",
-              borderRadius: "5px",
-              fontWeight: "bold",
-              textAlign: "center",
-              marginTop: "20px",
-              transition: "background-color 0.3s ease",
-            }}
-            onMouseEnter={(e) => e.target.style.backgroundColor = "#0056b3"}
-            onMouseLeave={(e) => e.target.style.backgroundColor = "#007BFF"}
-          >
-            Télécharger le fichier
-          </a>
-        )}
+  <a 
+    href={`../upload/${post.pdf}`} 
+    download={`${post.title}.pdf`} // Utiliser le titre du post comme nom de fichier
+    style={{
+      display: "inline-block",
+      width: "50px", // Largeur du cercle
+      height: "50px", // Hauteur du cercle
+      backgroundColor: "#007BFF", // Couleur de fond
+      color: "#fff", // Couleur de l'icône
+      textDecoration: "none",
+      borderRadius: "50%", // Cercle
+      textAlign: "center",
+      lineHeight: "50px", // Centrer l'icône verticalement
+      transition: "background-color 0.3s ease",
+      fontSize: "24px", // Taille de l'icône
+    }}
+    onMouseEnter={(e) => e.target.style.backgroundColor = "#0056b3"}
+    onMouseLeave={(e) => e.target.style.backgroundColor = "#007BFF"}
+  >
+    <i className="fas fa-download"></i> {/* Icône de téléchargement */}
+  </a>
+)}
+
+
 
         {/* Title Section */}
         <div className="title" style={{ display: "flex", flexDirection: "column", gap: "15px", borderBottom: "2px solid #f1f1f1", paddingBottom: "15px" }}>
