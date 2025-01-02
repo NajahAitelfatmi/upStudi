@@ -18,7 +18,7 @@ const Write = () => {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      const res = await axios.post("/upload", formData);
+      const res = await axios.post("https://upstudi.onrender.com/api/upload", formData);
       return res.data;
     } catch (err) {
       console.error("Error uploading file:", err);
@@ -32,14 +32,14 @@ const Write = () => {
 
     try {
       if (state) {
-        await axios.put(`/posts/${state.id}`, {
+        await axios.put(`https://upstudi.onrender.com/api/posts/${state.id}`, {
           title,
           desc: value,
           cat,
           pdf: imgUrl || "",
         });
       } else {
-        await axios.post("/posts/", {
+        await axios.post("https://upstudi.onrender.com/api/posts/", {
           title,
           desc: value,
           cat,
