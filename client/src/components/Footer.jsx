@@ -23,7 +23,7 @@ export default function Footer() {
         e.preventDefault();
 
         try {
-            const response = await fetch('/contact', {
+            const response = await fetch('https://upstudi.onrender.com/api/contact', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
