@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:3000", // Allow your frontend
+    origin: "https://upstudi-1.onrender.com", // Allow your frontend
     credentials: true, // Required for cookies
   })
 );
