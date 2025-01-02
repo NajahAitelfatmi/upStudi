@@ -39,7 +39,7 @@ const Write = () => {
           pdf: imgUrl || "",
         });
       } else {
-        await axios.post("`https://upstudi.onrender.com/api/posts/", {
+        await axios.post("https://upstudi.onrender.com/api/posts/", {
           title,
           desc: value,
           cat,
