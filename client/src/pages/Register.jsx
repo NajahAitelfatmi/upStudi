@@ -28,7 +28,7 @@ const Register = () => {
     
     e.preventDefault();
     try {
-      await axios.post("https://upstudi.onrender.com/api/auth/register", inputs);
+      await axios.post("/auth/register", inputs);
       navigate("/login");
     } catch (err) {
       setError(err.response.data);
